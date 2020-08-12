@@ -1,0 +1,15 @@
+server:
+  port: 9998
+zuul:
+  prefix: /api
+  sensitiveHeaders: Cookie, Set-Cookie
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  add-proxy-headers: true
+  ribbon-isolation-strategy: semaphore
+  semaphore:
+    max-semaphores: 30000
+eureka:
+  client:
+    register-with-eureka: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
