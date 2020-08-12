@@ -27,7 +27,7 @@ Primeiramente é necessário que faça o download do [Redis](https://redis.io/do
 
 Faça o clone do [código fonte](https://github.com/matcarvit/matcarv.git) do projeto.
 
-### MatCarv Commons
+## MatCarv Commons
 
 ```bash
 cd matcarv/matcarv-commons
@@ -35,7 +35,7 @@ mvn clean install
 cd ..
 ```
 
-###MatCarv Gateway ( Netflix Eureka )
+## MatCarv Gateway ( Netflix Eureka )
 
 ```bash
 cd matcarv-gateway
@@ -43,7 +43,7 @@ mvn clean package
 nohup java -jar target/matcarv-gateway.jar & tail -f nohup.out
 ```
 
-###MatCarv Auth
+## MatCarv Auth
 
 ```bash
 cd matcarv-auth
@@ -51,7 +51,7 @@ mvn clean package
 nohup java -jar target/matcarv-auth.jar & tail -f nohup.out
 ```
 
-###MatCarv Products
+## MatCarv Products
 
 ```bash
 cd matcarv-products
@@ -59,7 +59,7 @@ mvn clean package
 nohup java -jar target/matcarv-products.jar & tail -f nohup.out
 ```
 
-###MatCarv Orders
+## MatCarv Orders
 
 ```bash
 cd matcarv-order
