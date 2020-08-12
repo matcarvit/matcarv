@@ -12,7 +12,7 @@
 	<artifactId>matcarv-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>matcarv-gateway</name>
-	<description>A Example Solution from MatCarv</description>
+	<description>MatCarv - A Example Solution from MatCarv</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -44,6 +44,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

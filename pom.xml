@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>matcarv</name>
-  <description>A Example Solution from MatCarv</description>
+  <description>MatCarv - A Example Solution from MatCarv</description>
   <modules> 
   	<module>matcarv-gateway</module>
   	<module>matcarv-proxy</module>

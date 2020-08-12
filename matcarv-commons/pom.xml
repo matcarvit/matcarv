@@ -12,7 +12,7 @@
 	<artifactId>matcarv-commons</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>matcarv-commons</name>
-	<description>A Example Solution from MatCarv</description>
+	<description>MatCarv - A Example Solution from MatCarv</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -53,6 +53,7 @@
 	</dependencies>
 
 	  <build>
+	 	<finalName>${project.artifactId}</finalName>
 	    <plugins>
 	      <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
