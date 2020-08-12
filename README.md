@@ -18,6 +18,7 @@ Para isso, foi utilizado o Redis como solução de cache para compartilhamento d
 - Spring Boot
 - Spring Data / JPA
 - Spring Security / JWT
+- RESTful / JSON
 - Swagger UI
 - Netflix Zuul and Eureka
 
