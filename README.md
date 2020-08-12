@@ -90,7 +90,10 @@ módulo products > http://{yourhost}:9998/api/products/info
 módulo orders > http://{yourhost}:9998/api/order/info
 
 ```
-OBS: Os Bancos de Dados serão gerados em memória, sendo a estrutura criada em tempo de deploy. Caso deseja que seja de forma física, vá em application.yml de cada módulo e modifique os dados referente à conexão de Banco de Dados.
+
+## Observações
+
+Os Bancos de Dados serão gerados em memória, sendo a estrutura criada em tempo de deploy. Caso deseja que seja de forma física, vá em application.yml de cada módulo e modifique os dados referente à conexão de Banco de Dados.
 
 ## Login e Senha para autenticação no MatCarv Auth
 
