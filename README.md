@@ -84,7 +84,7 @@ nohup java -jar target/matcarv-proxy.jar & tail -f nohup.out
 Após a build e execução dos módulos, acesse as URLs:
 
 ```bash
-módulo auth  http://{yourhost}:9998/api/auth/info
+módulo auth > http://{yourhost}:9998/api/auth/info
 módulo products > http://{yourhost}:9998/api/products/info
 módulo orders > http://{yourhost}:9998/api/order/info
 
@@ -96,7 +96,7 @@ OBS: Os Bancos de Dados serão gerados em memória, sendo a estrutura criada em 
 - Usuário: admin
 - Senha: 123456
 
-É necessário copiar o JWT gerado para a reutilização nos outros módulos.
+É necessário copiar o JWT gerado ( junto com o prefixo "Bearer" ) para a reutilização nos outros módulos.
 
 
 
