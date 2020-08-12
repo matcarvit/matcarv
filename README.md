@@ -68,7 +68,7 @@ nohup java -jar target/matcarv-order.jar & tail -f nohup.out
 
 ```
 
-###MatCarv Proxy ( Netflix Zuul )
+## MatCarv Proxy ( Netflix Zuul )
 
 ```bash
 cd matcarv-proxy
@@ -76,6 +76,11 @@ mvn clean package
 nohup java -jar target/matcarv-proxy.jar & tail -f nohup.out
 
 ```
+
+
+
+
+
 Após a build e execução dos módulos, acesse as URLs:
 
 ```bash
