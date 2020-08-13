@@ -8,12 +8,15 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matcarv.products.business.ProductBusiness;
 import com.matcarv.products.converters.ProductConverter;
+import com.matcarv.products.dtos.ProductFilterDTO;
 import com.matcarv.products.dtos.ProductFormDTO;
+import com.matcarv.products.dtos.ProductSearchDTO;
 import com.matcarv.products.entities.Product;
 
 import lombok.Getter;
@@ -65,8 +68,17 @@ public class ProductResource {
 	 * 
 	 * @return
 	 */
-	@GetMapping(path = "/products")
-	public List<ProductFormDTO> findAll() {
-		return getProductConverter().convertToDTOList(getProductBusiness().findAll());
+	@PostMapping(path = "/products")
+	public List<ProductSearchDTO> findByFilter(final ProductFilterDTO filter) {
+		return getProductBusiness().findByFilter(filter);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@PostMapping(path = "/products/count")
+	public Long getCount(final ProductFilterDTO filter) {
+		return getProductBusiness().getCount(filter);
 	}
 }

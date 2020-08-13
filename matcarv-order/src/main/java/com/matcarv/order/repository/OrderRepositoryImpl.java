@@ -11,12 +11,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.matcarv.order.dtos.OrderFilterDTO;
 import com.matcarv.order.dtos.OrderSearchDTO;
 import com.matcarv.order.entities.Order;
+import com.matcarv.order.entities.OrderItem;
 
 import lombok.Getter;
 
@@ -31,6 +35,9 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	 */
 	private static final long serialVersionUID = -8529821076118476661L;
 	
+	/**
+	 * 
+	 */
 	@Getter
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -40,12 +47,13 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	 */
 	@Override
 	public List<OrderSearchDTO> findByFilter(final OrderFilterDTO filter) {
-		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
 		final CriteriaQuery<OrderSearchDTO> criteriaQuery = criteriaBuilder.createQuery(OrderSearchDTO.class);
 		
 		final Root<Order> root = criteriaQuery.from(Order.class);
+		final ListJoin<Order, OrderItem> orderItemJoin = root.joinList("items");
 		
-		final List<Predicate> predicates = prepareFilter(criteriaBuilder, root, filter);
+		final List<Predicate> predicates = prepareFilter(criteriaBuilder, root, orderItemJoin, filter);
 		
 		criteriaQuery.select(
 				criteriaBuilder.construct(
@@ -58,8 +66,12 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 		
 		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
+		criteriaQuery.groupBy(root.get("id"));
 		
-		final TypedQuery<OrderSearchDTO> query = entityManager.createQuery(criteriaQuery);
+		final TypedQuery<OrderSearchDTO> query = getEntityManager().createQuery(criteriaQuery);
+		query.setFirstResult(filter.getFirstResult());
+		query.setMaxResults(filter.getMaxResults());
+		
 		final List<OrderSearchDTO> list = query.getResultList();
 		
 		return list;
@@ -70,18 +82,18 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	 */
 	@Override
 	public Long getCount(final OrderFilterDTO filter) {
-		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
 		final CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		
 		final Root<Order> root = criteriaQuery.from(Order.class);
+		final ListJoin<Order, OrderItem> orderItemJoin = root.joinList("items");
 		
-		final List<Predicate> predicates = prepareFilter(criteriaBuilder, root, filter);
+		final List<Predicate> predicates = prepareFilter(criteriaBuilder, root, orderItemJoin, filter);
 		
 		criteriaQuery.select(criteriaBuilder.count(root));
 		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
-		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 		
-		final TypedQuery<Long> query = entityManager.createQuery(criteriaQuery);
+		final TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
 		final Long count = query.getSingleResult();
 		
 		return count;
@@ -94,8 +106,21 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	 * @param filter
 	 * @return
 	 */
-	private List<Predicate> prepareFilter(final CriteriaBuilder criteriaBuilder, final Root<Order> root, final OrderFilterDTO filter) {
+	private List<Predicate> prepareFilter(
+			final CriteriaBuilder criteriaBuilder, 
+			final Root<Order> root, 
+			final ListJoin<Order, OrderItem> orderItemJoin, 
+			final OrderFilterDTO filter) {
 		final List<Predicate> predicates = new ArrayList<>();
+		
+		if (StringUtils.isNotEmpty(filter.getProductDesciption())) {
+			predicates.add(criteriaBuilder.like(orderItemJoin.get("productDescription"), "%" + filter.getProductDesciption() + "%"));
+		}
+		
+		if(filter.getOrderStatusType() != null) {
+			predicates.add(criteriaBuilder.equal(root.get("orderStatusType"), filter.getOrderStatusType()));
+		}
+		
 		return predicates;
 	}
 

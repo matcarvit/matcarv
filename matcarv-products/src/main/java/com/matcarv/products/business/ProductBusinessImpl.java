@@ -19,6 +19,8 @@ import com.matcarv.commons.cache.business.ProductCacheBusiness;
 import com.matcarv.commons.cache.entities.ProductCache;
 import com.matcarv.commons.enums.OrderStatusType;
 import com.matcarv.commons.enums.TransactionType;
+import com.matcarv.products.dtos.ProductFilterDTO;
+import com.matcarv.products.dtos.ProductSearchDTO;
 import com.matcarv.products.entities.Product;
 import com.matcarv.products.repository.ProductRepository;
 
@@ -42,10 +44,16 @@ public class ProductBusinessImpl extends AbstractBaseBusinessImpl<Product, Strin
 	 */
 	private static final Log log = LogFactory.getLog(ProductBusinessImpl.class);
 	
+	/**
+	 * 
+	 */
 	@Getter
 	@Autowired
 	private ProductRepository repository;
 	
+	/**
+	 * 
+	 */
 	@Getter
 	@Autowired
 	private ProductCacheBusiness productCacheBusiness;
@@ -96,5 +104,21 @@ public class ProductBusinessImpl extends AbstractBaseBusinessImpl<Product, Strin
 			}
 		
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public List<ProductSearchDTO> findByFilter(final ProductFilterDTO filter) {
+		return getRepository().findByFilter(filter);
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public Long getCount(final ProductFilterDTO filter) {
+		return getRepository().getCount(filter);
 	}
 }

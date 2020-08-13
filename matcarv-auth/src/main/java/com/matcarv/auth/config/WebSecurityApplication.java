@@ -50,7 +50,7 @@ public class WebSecurityApplication extends WebSecurityConfigurerAdapter {
 	                "/**/*.css",
 	                "/**/*.js"
 	        ).permitAll()
-			.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+			.antMatchers(HttpMethod.PUT, "/authenticate").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
