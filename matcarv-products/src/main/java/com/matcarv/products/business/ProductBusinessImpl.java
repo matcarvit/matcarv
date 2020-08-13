@@ -3,13 +3,16 @@
  */
 package com.matcarv.products.business;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ import com.matcarv.commons.cache.business.ProductCacheBusiness;
 import com.matcarv.commons.cache.entities.ProductCache;
 import com.matcarv.commons.enums.OrderStatusType;
 import com.matcarv.commons.enums.TransactionType;
+import com.matcarv.commons.exceptions.BusinessException;
 import com.matcarv.products.dtos.ProductFilterDTO;
 import com.matcarv.products.dtos.ProductSearchDTO;
 import com.matcarv.products.entities.Product;
@@ -57,6 +61,40 @@ public class ProductBusinessImpl extends AbstractBaseBusinessImpl<Product, Strin
 	@Getter
 	@Autowired
 	private ProductCacheBusiness productCacheBusiness;
+	
+	/**
+	 * 
+	 */
+	@Override
+	protected void processValidate(final Product entity, final TransactionType transactionType) {
+		if(entity.getCategory() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.categoria")));
+		}
+		
+		if(StringUtils.isEmpty(entity.getName())) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.nome.produto")));
+		}
+		
+		if(StringUtils.isEmpty(entity.getDescription())) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.descricao")));
+		}
+		
+		if(entity.getProductType() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.tipo.produto")));
+		}
+		
+		if(entity.getProductDate() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.data.produto")));
+		}
+		
+		if(entity.getQuantity() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.quantidade")));
+		}
+		
+		if(entity.getQuantity().equals(new BigDecimal(0))) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.quantidade.maior.zero"));
+		}
+	}
 	
 	/**
 	 * 
@@ -121,4 +159,5 @@ public class ProductBusinessImpl extends AbstractBaseBusinessImpl<Product, Strin
 	public Long getCount(final ProductFilterDTO filter) {
 		return getRepository().getCount(filter);
 	}
+
 }

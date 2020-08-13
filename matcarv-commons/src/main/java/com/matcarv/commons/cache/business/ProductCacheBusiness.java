@@ -18,7 +18,7 @@ public interface ProductCacheBusiness extends Serializable {
 	/**
 	 * 
 	 */
-	public void processInsert(final ProductCache entity);
+	public ProductCache processInsert(final ProductCache entity);
 		
 	/**
 	 * 

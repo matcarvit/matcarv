@@ -112,7 +112,7 @@ public class SwaggerApplication {
      * @param code
      * @return
      */
-	 private String getMessage(String code) {
+	 private String getMessage(final String code) {
 		 return messageSource.getMessage(code, null, Locale.getDefault());
 	 }
 }

@@ -37,14 +37,14 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	 */
 	private static final Log log = LogFactory.getLog(AbstractBaseBusinessImpl.class);
 	
+	
 	/**
 	 * 
 	 */
 	@Getter
 	@Autowired
 	private MessageSource messageSource;
-
-
+	
 	/**
 	 * 
 	 * @param entity
@@ -52,6 +52,8 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public E processInsert(final E entity) {
+		processValidate(entity, TransactionType.INSERT);
+		
 		return insertOrUpdate(entity, TransactionType.INSERT);
 	}
 	
@@ -62,6 +64,8 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public E processUpdate(final E entity) {
+		processValidate(entity, TransactionType.UPDATE);
+		
 		return insertOrUpdate(entity, TransactionType.UPDATE);
 	}
 	
@@ -124,7 +128,7 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
      * @return
      */
 	 protected String getMessage(final String code) {
-		 return messageSource.getMessage(code, null, Locale.getDefault());
+		 return getMessageSource().getMessage(code, null, Locale.getDefault());
 	 }
 	 
 
@@ -135,7 +139,7 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	  * @return
 	  */
 	 protected String getMessage(final String code, final String... params) {
-		 return messageSource.getMessage(code, params, Locale.getDefault());
+		 return getMessageSource().getMessage(code, params, Locale.getDefault());
 	 }
 	
 	/**
@@ -143,6 +147,15 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	 * @return
 	 */
 	protected abstract BaseRepository<E, ID> getRepository();
+	
+	/**
+	 * 
+	 * @param entity
+	 * @param transactionType
+	 */
+	protected void processValidate(final E entity, final TransactionType transactionType) {
+		
+	}
 	
 	 
 	/**
@@ -155,7 +168,7 @@ public abstract class AbstractBaseBusinessImpl<E extends BaseEntity<ID>, ID exte
 	@Override
 	public <T> T convert(final Object source, final Class<T> targetType) {
         if (source == null || targetType == null) {
-        	throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, "Os campos source e targetType são obritórios...");
+        	throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, getMessage("msg.campos.source.targetType.obrigatorios"));
         }
         
         T target = null;

@@ -3,9 +3,12 @@
  */
 package com.matcarv.order.business;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import com.matcarv.commons.cache.business.ProductCacheBusiness;
 import com.matcarv.commons.cache.entities.ProductCache;
 import com.matcarv.commons.enums.OrderStatusType;
 import com.matcarv.commons.enums.TransactionType;
+import com.matcarv.commons.exceptions.BusinessException;
 import com.matcarv.order.entities.Order;
 import com.matcarv.order.entities.OrderItem;
 import com.matcarv.order.repository.OrderItemRepository;
@@ -62,6 +66,37 @@ public class OrderItemBusinessImpl extends AbstractBaseBusinessImpl<OrderItem, S
 		
 		return merged;
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	protected void processValidate(final OrderItem entity, final TransactionType transactionType) {
+		if(entity.getOrder() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.pedido")));
+		}
+		
+		if(entity.getOrderStatusType() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.status")));
+		}
+		
+		if(StringUtils.isEmpty(entity.getProductId())) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.id.produto")));
+		}
+		
+		if(StringUtils.isEmpty(entity.getProductDesciption())) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.descricao.produto")));
+		}
+		
+		if(entity.getQuantity() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.quantidade")));
+		}
+		
+		if(entity.getQuantity().equals(new BigDecimal(0))) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.quantidade.maior.zero"));
+		}
+		
+	}
 
 	/**
 	 * 
@@ -104,6 +139,5 @@ public class OrderItemBusinessImpl extends AbstractBaseBusinessImpl<OrderItem, S
 			getProductCacheBusiness().processInsert(cache);
 		}
 	}
-	
 	
 }

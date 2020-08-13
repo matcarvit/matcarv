@@ -6,13 +6,16 @@ package com.matcarv.order.business;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.matcarv.commons.base.AbstractBaseBusinessImpl;
 import com.matcarv.commons.enums.OrderStatusType;
 import com.matcarv.commons.enums.TransactionType;
+import com.matcarv.commons.exceptions.BusinessException;
 import com.matcarv.order.dtos.OrderFilterDTO;
 import com.matcarv.order.dtos.OrderSearchDTO;
 import com.matcarv.order.entities.Order;
@@ -64,6 +67,24 @@ public class OrderBusinessImpl extends AbstractBaseBusinessImpl<Order, String> i
 		}
 		
 		return merged;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	protected void processValidate(final Order entity, final TransactionType transactionType) {
+		if(entity.getOrderDate() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.campo.obrigatorio", getMessage("lbl.data.pedido")));
+		}
+		
+		if(CollectionUtils.isEmpty(entity.getItems())) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.um.item.pedido.lista"));
+		}
+		
+		if(entity.getOrderStatusType() == null) {
+			throw new BusinessException(HttpStatus.BAD_REQUEST, getMessage("msg.um.item.pedido.lista", getMessage("lbl.status")));
+		}
 	}
 	
 	/**
