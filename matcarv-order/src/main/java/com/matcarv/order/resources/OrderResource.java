@@ -45,10 +45,12 @@ public class OrderResource {
 
 	/**
 	 * 
-	 * @param entity
+	 * @param formDTO
 	 */
 	@PutMapping(path = "/orders/persist")
-	public OrderFormDTO persist(final Order entity) {
+	public OrderFormDTO persist(final OrderFormDTO formDTO) {
+		final Order entity = getOrderConverter().convertToEntity(formDTO);
+		
 		if(StringUtils.isEmpty(entity.getId())) {
 			return getOrderConverter().convertToDTO(getOrderBusiness().processInsert(entity));
 		}
@@ -63,6 +65,15 @@ public class OrderResource {
 	@GetMapping(path = "/orders/delete")
 	public void delete(final String id) {
 		getOrderBusiness().deleteById(id);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 */
+	@GetMapping(path = "/orders/cancel")
+	public void cancel(final String id) {
+		getOrderBusiness().cancel(id);
 	}
 	
 	/**

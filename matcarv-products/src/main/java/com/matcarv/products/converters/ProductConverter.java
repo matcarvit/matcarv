@@ -60,7 +60,6 @@ public class ProductConverter extends BaseConverter<Product, ProductFormDTO>{
 		entity.setCategory(getCategoryConverter().convertToEntity(dto.getCategory()));
 		entity.setDescription(dto.getDescription());
 		entity.setProductType(dto.getProductType());
-		entity.setProductDate(dto.getProductDate());
 		entity.setQuantity(dto.getQuantity());
 		
 		return entity;

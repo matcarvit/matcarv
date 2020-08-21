@@ -35,6 +35,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	 */
 	private static final long serialVersionUID = -8683220095766114663L;
 	
+	/**
+	 * 
+	 */
 	@Getter
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -59,6 +62,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 						root.get("name"),
 						root.get("description"),
 						categoryJoin.get("description"),
+						root.get("quantity"),
 						root.get("productType")
 				)
 		);

@@ -4,6 +4,7 @@
 package com.matcarv.products.dtos;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.matcarv.commons.enums.ProductType;
 
@@ -43,6 +44,11 @@ public class ProductSearchDTO implements Serializable {
 	
 	/**
 	 * 
+	 */
+	private final BigDecimal quantity;
+	
+	/**
+	 * 
 	 */	
 	private final ProductType type;
 
@@ -52,15 +58,17 @@ public class ProductSearchDTO implements Serializable {
 	 * @param name
 	 * @param description
 	 * @param category
+	 * @param quantity
 	 * @param type
 	 */
-	public ProductSearchDTO(final String id, final String name, final String description, final String category, final ProductType type) {
+	public ProductSearchDTO(final String id, final String name, final String description, final String category, final BigDecimal quantity, final ProductType type) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.category = category;
 		this.type = type;
+		this.quantity = quantity;
 	}
 	
 	

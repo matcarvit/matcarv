@@ -49,7 +49,6 @@ public class OrderConverter extends BaseConverter<Order, OrderFormDTO>{
 	public Order convertToEntity(final OrderFormDTO dto) {
 		final Order entity = new Order();
 		entity.setId(dto.getId());
-		entity.setOrderDate(dto.getOrderDate());
 		entity.setOrderStatusType(dto.getOrderStatusType());
 		entity.setItems(getOrderItemConverter().convertToEntityList(dto.getItems()));
 		

@@ -96,7 +96,7 @@ public class OrderBusinessImpl extends AbstractBaseBusinessImpl<Order, String> i
 		final Order entity = getRepository().getOne(id);
 		entity.setOrderStatusType(OrderStatusType.CANCELLED);
 		
-		insertOrUpdate(entity, TransactionType.CANCEL);
+		getRepository().save(entity);
 		
 		getOrderItemBusiness().cancelByOrder(entity);
 		

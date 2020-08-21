@@ -44,10 +44,12 @@ public class ProductResource {
 
 	/**
 	 * 
-	 * @param entity
+	 * @param formDTO
 	 */
 	@PutMapping(path = "/products/persist")
-	public ProductFormDTO persist(final Product entity) {
+	public ProductFormDTO persist(final ProductFormDTO formDTO) {
+		final Product entity = getProductConverter().convertToEntity(formDTO);
+		
 		if(StringUtils.isEmpty(entity.getId())) {
 			return getProductConverter().convertToDTO(getProductBusiness().processInsert(entity));
 		}
@@ -63,6 +65,7 @@ public class ProductResource {
 	public void delete(final String id) {
 		getProductBusiness().deleteById(id);
 	}
+	
 	
 	/**
 	 * 

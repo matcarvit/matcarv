@@ -41,10 +41,12 @@ public class CategoryResource {
 	
 	/**
 	 * 
-	 * @param entity
+	 * @param formDTO
 	 */
 	@PutMapping(path = "/categories/persist")
-	public CategoryFormDTO persist(final Category entity) {
+	public CategoryFormDTO persist(final CategoryFormDTO formDTO) {
+		final Category entity = getCategoryConverter().convertToEntity(formDTO);
+		
 		if(StringUtils.isEmpty(entity.getId())) {
 			return getCategoryConverter().convertToDTO(getCategoryBusiness().processInsert(entity));
 		}

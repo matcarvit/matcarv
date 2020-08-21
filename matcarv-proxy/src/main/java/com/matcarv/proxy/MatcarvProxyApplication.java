@@ -31,6 +31,7 @@ public class MatcarvProxyApplication {
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("PATCH");
         source.registerCorsConfiguration("/**", config);
+        
         return new CorsFilter(source);
     }
 
