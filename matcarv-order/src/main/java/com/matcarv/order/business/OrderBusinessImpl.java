@@ -59,11 +59,16 @@ public class OrderBusinessImpl extends AbstractBaseBusinessImpl<Order, String> i
 		final Order merged = super.insertOrUpdate(entity, type);
 		entity.setId(merged.getId());
 		
-		getOrderItemBusiness().deleteByOrder(merged);
-		
-		for(final OrderItem item : entity.getItems()) {
-			item.setOrder(merged);
-			getOrderItemBusiness().processInsert(item);
+		switch (type) {
+		case INSERT:
+			for(final OrderItem item : entity.getItems()) {
+				item.setOrder(merged);
+				getOrderItemBusiness().processInsert(item);
+			}
+			break;
+
+		default:
+			break;
 		}
 		
 		return merged;
@@ -101,17 +106,6 @@ public class OrderBusinessImpl extends AbstractBaseBusinessImpl<Order, String> i
 		getOrderItemBusiness().cancelByOrder(entity);
 		
 		return entity;
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void deleteById(final String id) {
-		final Order entity = getRepository().getOne(id);
-		getOrderItemBusiness().deleteByOrder(entity);
-		
-		super.deleteById(id);
 	}
 	
 	/**

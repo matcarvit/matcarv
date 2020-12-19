@@ -56,13 +56,22 @@ public class OrderItemBusinessImpl extends AbstractBaseBusinessImpl<OrderItem, S
 	@Override
 	protected OrderItem insertOrUpdate(final OrderItem entity, final TransactionType type) {
 		final OrderItem merged = super.insertOrUpdate(entity, type);
-		final RandomString random = new RandomString();
-		final ProductCache cache = new ProductCache();
-		cache.setId(random.nextString());
-		cache.setProductId(entity.getProductId());
-		cache.setQuantity(entity.getQuantity());
 		
-		getProductCacheBusiness().processInsert(cache);
+		switch (type) {
+			case INSERT:
+				final RandomString random = new RandomString();
+				final ProductCache cache = new ProductCache();
+				cache.setId(random.nextString());
+				cache.setProductId(entity.getProductId());
+				cache.setQuantity(entity.getQuantity());
+				
+				getProductCacheBusiness().processInsert(cache);
+				break;
+	
+			default:
+				break;
+		}
+		
 		
 		return merged;
 	}
@@ -106,15 +115,6 @@ public class OrderItemBusinessImpl extends AbstractBaseBusinessImpl<OrderItem, S
 		final List<OrderItem> list = getRepository().findByOrder(order);
 		
 		return list;
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void deleteByOrder(final Order order) {
-		getRepository().deleteByOrder(order);
 	}
 
 	/**

@@ -25,12 +25,6 @@ public interface OrderItemBusiness extends BaseBusiness<OrderItem, String>{
 	/**
 	 * 
 	 * @param order
-	 */
-	public void deleteByOrder(final Order order);
-	
-	/**
-	 * 
-	 * @param order
 	 * @return
 	 */
 	public void cancelByOrder(final Order order);

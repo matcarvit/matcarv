@@ -10,19 +10,19 @@ import java.util.List;
  * @author weslleymatosdecarvalho
  *
  */
-public interface BaseBusiness<E, ID> extends Serializable {
+public interface BaseBusiness<E extends BaseEntity<ID>, ID extends Serializable> extends Serializable {
 
 	/**
 	 * 
 	 * @param entity
 	 */
-	public E processInsert(final E entity);
+	public E processInsert(final E dto);
 	
 	/**
 	 * 
 	 * @param entity
 	 */
-	public E processUpdate(final E entity);
+	public E processUpdate(final E dto);
 	
 	/**
 	 * 
