@@ -13,5 +13,6 @@
   	<module>matcarv-auth</module>
   	<module>matcarv-products</module>
   	<module>matcarv-commons</module>
+  	<module>matcarv-boot-admin</module>
   </modules>
 </project>
