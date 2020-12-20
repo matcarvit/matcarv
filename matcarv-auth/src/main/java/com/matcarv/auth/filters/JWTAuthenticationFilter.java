@@ -32,11 +32,15 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain filterChain)
 			throws IOException, ServletException {
+		final String token = ((HttpServletRequest) request).getHeader("Authorization");
 		
-		final Authentication authentication = tokenAuthenticationService
-				.getAuthentication((HttpServletRequest) request);
+		if(token != null && !token.contains("Basic")) {
+			final Authentication authentication = tokenAuthenticationService
+					.getAuthentication((HttpServletRequest) request);
+			
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
 		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		filterChain.doFilter(request, response);
 	}

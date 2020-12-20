@@ -45,7 +45,6 @@ public class WebSecurityApplication extends WebSecurityConfigurerAdapter {
 	                "/configuration/**",      
 	                "/*.html",
 	                "/favicon.ico",
-	                "/actuator/**",
 	                "/**/*.html",
 	                "/**/*.css",
 	                "/**/*.js"

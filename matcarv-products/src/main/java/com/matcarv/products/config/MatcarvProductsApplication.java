@@ -2,6 +2,8 @@ package com.matcarv.products.config;
 
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,15 +22,23 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.matcarv.products.entities.Category;
 import com.matcarv.products.repository.CategoryRepository;
+
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 
  * @author weslleymatosdecarvalho
  *
  */
+@ApiIgnore
+@RestController
 @EnableAutoConfiguration
 @SpringBootApplication
 @EnableCaching
@@ -79,6 +89,28 @@ public class MatcarvProductsApplication {
             repository.findAll().forEach(System.out::println);
         };
     }
+	
+	/**
+	 * 
+	 * @param httpServletResponse
+	 */
+	@ApiOperation(value = "", hidden = true)
+	@RequestMapping(value = "/docs", method = RequestMethod.GET)
+	public void initDocs(final HttpServletResponse httpServletResponse) {
+	    httpServletResponse.setHeader("Location", "/api/products/swagger-ui.html");
+	    httpServletResponse.setStatus(302);
+	}
+	
+	/**
+	 * 
+	 * @param httpServletResponse
+	 */
+	@ApiOperation(value = "", hidden = true)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public void init(final HttpServletResponse httpServletResponse) {
+	    httpServletResponse.setHeader("Location", "/swagger-ui.html");
+	    httpServletResponse.setStatus(302);
+	}
 	
 	/**
 	 * 

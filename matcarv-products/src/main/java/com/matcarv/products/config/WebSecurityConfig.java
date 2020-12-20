@@ -28,15 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(
                 HttpMethod.GET,
-                "/docs",
-                "/info",
                 "/v2/api-docs",
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/configuration/**",
                 "/*.html",
                 "/favicon.ico",
-                "/actuator/**",
                 "/**/*.html",
                 "/**/*.css",
                 "/**/*.js"

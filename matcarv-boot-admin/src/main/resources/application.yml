@@ -1,0 +1,33 @@
+server:
+  port: 7001
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+
+  application:
+    name: admin
+  boot:
+    admin:
+      discovery:
+        ignored-services: gateway, admin
+
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
